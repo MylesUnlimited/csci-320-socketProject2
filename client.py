@@ -38,7 +38,7 @@ def send_file(filename: str, address: (str, int)):
         message = size + name
         # TODO: section 2 step 7
         client_socket.sendto(message, (IP, PORT))
-        reply, address = client_socket.recvfrom(BUFFER_SIZE)
+        reply = client_socket.recv(BUFFER_SIZE)
         if reply != b'go ahead':
             raise Exception('Bad server response - was not go ahead!')
 
@@ -49,7 +49,7 @@ def send_file(filename: str, address: (str, int)):
             while not is_done:
                 chunk = file.read(BUFFER_SIZE)
                 if len(chunk) > 0:
-                    client_socket.sendto(chunk, (IP, PORT))
+                    client_socket.send(chunk)
                 elif len(chunk) == 0:
                     is_done = True
 
